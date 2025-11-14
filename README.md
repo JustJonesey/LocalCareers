@@ -6,11 +6,11 @@ career pages (JSON feeds) and lets store managers post or remove openings direct
 
 ## Features
 
-- 📍 **Map-first interface** – A Google Maps canvas displays hiring locations with
-  markers that show the number of available jobs. Click any location to see a popup
-  with the current postings and quick links to apply.
-- 🧭 **Radius filtering** – Enter a street address plus a radius (miles) to focus the
-  job list on a specific neighborhood.
+- 📍 **Map-first interface** – A Leaflet map displays hiring locations with markers
+  that show the number of available jobs. Click any location to see a popup with
+  the current postings and quick links to apply.
+- 🧭 **Radius filtering** – Enter a latitude, longitude, and radius (miles) to limit
+  results to a custom area.
 - 🏪 **Business portal** – Local businesses can publish new roles, remove filled
   positions, or ingest their public careers feed without leaving the map view.
 - 🔄 **Import jobs from websites** – Point the importer at a JSON feed (array or
