@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LocalCareers Map</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhI3G2/2tP8Hk3PpQj8p2f3hS2d6Gs3z0iJE="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-api-base="http://localhost:4000">
+    <header class="app-header">
+      <h1>LocalCareers</h1>
+      <p class="tagline">Discover open positions in your community.</p>
+    </header>
+
+    <main class="layout">
+      <section class="map-section">
+        <div id="map" aria-label="Job postings map"></div>
+      </section>
+      <section class="sidebar" aria-label="Job controls and listings">
+        <section class="panel" id="summary-panel">
+          <h2>Job Summary</h2>
+          <p id="job-total">Loading jobs…</p>
+          <div class="filter-group">
+            <label>
+              Center Latitude
+              <input type="number" id="filter-lat" step="0.000001" placeholder="35.4789" />
+            </label>
+            <label>
+              Center Longitude
+              <input type="number" id="filter-lng" step="0.000001" placeholder="-79.1925" />
+            </label>
+            <label>
+              Radius (miles)
+              <input type="number" id="filter-radius" step="1" min="1" placeholder="25" />
+            </label>
+            <button id="apply-filter">Apply radius filter</button>
+            <button id="reset-filter" class="secondary">Reset filter</button>
+          </div>
+        </section>
+
+        <section class="panel" id="jobs-panel">
+          <h2>Job Postings</h2>
+          <ul id="job-list" class="job-list"></ul>
+        </section>
+
+        <section class="panel" id="business-panel">
+          <h2>Business Portal</h2>
+          <details open>
+            <summary>Add a job posting</summary>
+            <form id="add-job-form" class="form-grid">
+              <label>Job title<input name="title" required /></label>
+              <label>Company<input name="company" required /></label>
+              <label>Address<input name="address" required /></label>
+              <label>City<input name="city" /></label>
+              <label>State<input name="state" maxlength="2" /></label>
+              <label>Postal code<input name="postalCode" /></label>
+              <label>Latitude<input name="latitude" type="number" step="0.000001" required /></label>
+              <label>Longitude<input name="longitude" type="number" step="0.000001" required /></label>
+              <label>Posting URL<input name="url" type="url" required /></label>
+              <label>Description<textarea name="description" rows="3"></textarea></label>
+              <button type="submit">Publish job</button>
+            </form>
+          </details>
+
+          <details>
+            <summary>Remove a job</summary>
+            <form id="remove-job-form" class="form-grid">
+              <label>Job ID<input name="jobId" required /></label>
+              <button type="submit" class="danger">Remove job</button>
+            </form>
+          </details>
+
+          <details>
+            <summary>Import from a website feed</summary>
+            <form id="import-form" class="form-grid">
+              <label>Feed name<input name="name" placeholder="Food Lion Careers" required /></label>
+              <label>Feed URL<input name="url" type="url" placeholder="https://example.com/jobs.json" required /></label>
+              <label>Field map (JSON)
+                <textarea name="fieldMap" rows="4" placeholder='{"title":"positionTitle","latitude":"coords.lat"}'></textarea>
+              </label>
+              <label>Defaults (JSON)
+                <textarea name="defaults" rows="3" placeholder='{"company":"Food Lion"}'></textarea>
+              </label>
+              <button type="submit" class="secondary">Run import</button>
+            </form>
+            <p class="helper-text">
+              The importer expects a JSON feed with either an array of jobs or a top-level
+              <code>jobs</code> field. Use the optional field map to match your feed's property names.
+            </p>
+          </details>
+        </section>
+      </section>
+    </main>
+
+    <template id="job-item-template">
+      <li class="job-item">
+        <div class="job-item__header">
+          <span class="job-item__title"></span>
+          <button class="job-item__focus" type="button">Zoom to job</button>
+        </div>
+        <p class="job-item__company"></p>
+        <p class="job-item__address"></p>
+        <a class="job-item__link" target="_blank" rel="noopener">View posting</a>
+        <p class="job-item__meta"></p>
+      </li>
+    </template>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-QVtoI4m08v4Zs1VlzPp1jLKtF3lD9GxgIGl2Q86pDyM="
+      crossorigin=""
+    ></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

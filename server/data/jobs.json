@@ -1,0 +1,39 @@
+{
+  "jobs": [
+    {
+      "id": "sample-food-lion-1",
+      "title": "Cashier",
+      "company": "Food Lion",
+      "address": "1435 Wicker St, Sanford, NC 27330",
+      "city": "Sanford",
+      "state": "NC",
+      "postalCode": "27330",
+      "latitude": 35.478915,
+      "longitude": -79.192561,
+      "url": "https://www.foodlion.com/careers/",
+      "source": {
+        "type": "seed",
+        "name": "Sample data"
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sample-food-lion-2",
+      "title": "Stocker",
+      "company": "Food Lion",
+      "address": "1435 Wicker St, Sanford, NC 27330",
+      "city": "Sanford",
+      "state": "NC",
+      "postalCode": "27330",
+      "latitude": 35.478915,
+      "longitude": -79.192561,
+      "url": "https://www.foodlion.com/careers/",
+      "source": {
+        "type": "seed",
+        "name": "Sample data"
+      },
+      "createdAt": "2024-01-01T00:00:00.000Z"
+    }
+  ],
+  "sources": []
+}
