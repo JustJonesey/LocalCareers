@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { URL } from 'node:url';
 import { getJobs, addJob, removeJob, getSources } from './dataStore.js';
 import { importFromSource } from './importer.js';
+import { ensureJobCoordinates } from './geocoder.js';
 
 const PORT = Number(process.env.PORT) || 4000;
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(',').map((origin) => origin.trim()) ?? ['*'];
@@ -35,7 +36,8 @@ const server = createServer(async (req, res) => {
     if (req.method === 'POST' && url.pathname === '/api/jobs') {
       const body = await readBody(req);
       validateJobPayload(body);
-      const job = await addJob(body);
+      const jobPayload = await normalizeJobPayload(body);
+      const job = await addJob(jobPayload);
       return sendJson(res, 201, { job });
     }
 
@@ -123,8 +125,16 @@ function degToRad(degrees) {
   return degrees * (Math.PI / 180);
 }
 
+async function normalizeJobPayload(payload) {
+  const job = await ensureJobCoordinates(payload);
+  if (!job) {
+    throw new Error('Unable to determine the job\'s coordinates from the provided address.');
+  }
+  return job;
+}
+
 function validateJobPayload(payload = {}) {
-  const required = ['title', 'company', 'address', 'latitude', 'longitude', 'url'];
+  const required = ['title', 'company', 'address', 'url'];
   const missing = required.filter((key) => !payload[key]);
   if (missing.length) {
     throw new Error(`Missing required fields: ${missing.join(', ')}`);

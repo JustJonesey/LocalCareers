@@ -4,12 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LocalCareers Map</title>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhI3G2/2tP8Hk3PpQj8p2f3hS2d6Gs3z0iJE="
-      crossorigin=""
-    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body data-api-base="http://localhost:4000">
@@ -28,12 +22,13 @@
           <p id="job-total">Loading jobs…</p>
           <div class="filter-group">
             <label>
-              Center Latitude
-              <input type="number" id="filter-lat" step="0.000001" placeholder="35.4789" />
-            </label>
-            <label>
-              Center Longitude
-              <input type="number" id="filter-lng" step="0.000001" placeholder="-79.1925" />
+              Address to search around
+              <input
+                type="text"
+                id="filter-address"
+                placeholder="123 Main St, Sanford NC"
+                autocomplete="street-address"
+              />
             </label>
             <label>
               Radius (miles)
@@ -60,12 +55,14 @@
               <label>City<input name="city" /></label>
               <label>State<input name="state" maxlength="2" /></label>
               <label>Postal code<input name="postalCode" /></label>
-              <label>Latitude<input name="latitude" type="number" step="0.000001" required /></label>
-              <label>Longitude<input name="longitude" type="number" step="0.000001" required /></label>
               <label>Posting URL<input name="url" type="url" required /></label>
               <label>Description<textarea name="description" rows="3"></textarea></label>
               <button type="submit">Publish job</button>
             </form>
+            <p class="helper-text">
+              Latitude and longitude are no longer required—the address is geocoded
+              automatically when you submit the form.
+            </p>
           </details>
 
           <details>
@@ -111,11 +108,11 @@
       </li>
     </template>
 
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-QVtoI4m08v4Zs1VlzPp1jLKtF3lD9GxgIGl2Q86pDyM="
-      crossorigin=""
-    ></script>
     <script type="module" src="app.js"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap&libraries=places"
+      async
+      defer
+    ></script>
   </body>
 </html>

@@ -1,4 +1,5 @@
 import { upsertJobs } from './dataStore.js';
+import { ensureJobCoordinates } from './geocoder.js';
 
 export async function importFromSource(sourceConfig) {
   if (!sourceConfig?.url) {
@@ -23,9 +24,20 @@ export async function importFromSource(sourceConfig) {
     throw new Error(`No job entries were found at ${sourceConfig.url}`);
   }
 
-  const mappedJobs = items
-    .map((item) => mapJob(item, sourceConfig))
-    .filter((job) => job.title && job.company && job.address && isCoordinate(job.latitude) && isCoordinate(job.longitude));
+  const mappedJobs = [];
+  for (const item of items) {
+    const job = mapJob(item, sourceConfig);
+    if (!job.title || !job.company || !job.address || !job.url) {
+      continue;
+    }
+
+    const withCoordinates = await ensureJobCoordinates(job);
+    if (!withCoordinates) {
+      continue;
+    }
+
+    mappedJobs.push(withCoordinates);
+  }
 
   if (!mappedJobs.length) {
     throw new Error('No valid job postings were produced after mapping.');
@@ -95,7 +107,3 @@ function readCategories(item, key) {
   return [];
 }
 
-function isCoordinate(value) {
-  const number = Number(value);
-  return Number.isFinite(number);
-}
